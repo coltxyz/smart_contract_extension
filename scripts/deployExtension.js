@@ -1,6 +1,6 @@
 async function main() {
-  const contractFactory = await hre.ethers.getContractFactory('ExtensionMint');
-  const mainContract = "0xdFB4078042254e8093a7ba74DB9316a3d107d4aB";
+  const contractFactory = await hre.ethers.getContractFactory('ExtensionMint1155');
+  const mainContract = "0xb599FbB8a929B21714Af226a43eA91E5c6C5d636";
   const contract = await contractFactory.deploy(mainContract);
   await contract.deployed();
   console.log("Yout need this address for minting!");

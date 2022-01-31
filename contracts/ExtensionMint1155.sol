@@ -5,11 +5,11 @@ pragma solidity ^0.8.0;
 /// @author: swms.de
 
 import "./access/AdminControl.sol";
-import "./core/IERC721CreatorCore.sol";
+import "./core/IERC1155CreatorCore.sol";
 import "./extensions/ICreatorExtensionTokenURI.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
@@ -19,7 +19,7 @@ import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
  * But I never thought that you would take it this far
  * What do I know?
  */
-contract ExtensionMint is AdminControl, ICreatorExtensionTokenURI {
+contract ExtensionMint1155 is AdminControl, ICreatorExtensionTokenURI {
     using Strings for uint256;
 
     address private _creator;
@@ -29,6 +29,10 @@ contract ExtensionMint is AdminControl, ICreatorExtensionTokenURI {
     string private _description;
     string private _attributes;
     string[2] private _previews;
+    
+    uint256[] private _tokenIdsForMint;
+    uint256[] private _amountsForMint;
+    string[] private _urisForMint;
 
     constructor(address creator) {
         _creator = creator;
@@ -47,16 +51,14 @@ contract ExtensionMint is AdminControl, ICreatorExtensionTokenURI {
             super.supportsInterface(interfaceId);
     }
 
-    function mint(
-        string memory name,
-        string memory description,
-        string memory image
-    ) public adminRequired {
-        require(_tokenId == 0, "Token already minted"); 
-        _name = name;
-        _description = description;
-        _previews[0] = image;
-        _tokenId = IERC721CreatorCore(_creator).mintExtension(msg.sender);
+    function mint() public {
+        // require(_tokenId == 0, "Token already minted");
+        address[] memory arg1 = new address[](1);
+        arg1[0] = msg.sender;
+        _amountsForMint.push(1);
+        _tokenIdsForMint.push(1);
+        // IERC1155CreatorCore(_creator).mintExtensionNew(arg1, _amountsForMint, _urisForMint);
+        IERC1155CreatorCore(_creator).mintExtensionExisting(arg1, _tokenIdsForMint, _amountsForMint);
     }
 
     function setName(string memory name) private adminRequired {
@@ -74,11 +76,11 @@ contract ExtensionMint is AdminControl, ICreatorExtensionTokenURI {
     function setPreviews(string memory imagePreview, string memory videoPreview)
         private
     {
-        require(
-            IERC721(_creator).ownerOf(_tokenId) == msg.sender ||
-                isAdmin(msg.sender),
-            "Only owner or admin can change."
-        );
+        // require(
+        //     IERC1155(_creator).ownerOf(_tokenId) == msg.sender ||
+        //         isAdmin(msg.sender),
+        //     "Only owner or admin can change."
+        // );
         _previews[0] = imagePreview;
         _previews[1] = videoPreview;
     }
