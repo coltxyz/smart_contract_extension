@@ -14,11 +14,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
-/**
- * As I recall, I know you love to show off
- * But I never thought that you would take it this far
- * What do I know?
- */
 contract ExtensionMint is AdminControl, ICreatorExtensionTokenURI {
     using Strings for uint256;
 

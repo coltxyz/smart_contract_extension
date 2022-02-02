@@ -1,10 +1,16 @@
+require('dotenv').config();
+
+
+const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
+
 async function main() {
   const contractFactory = await hre.ethers.getContractFactory('ExtensionMint1155');
-  const mainContract = "0xb599FbB8a929B21714Af226a43eA91E5c6C5d636";
+  const mainContract = process.env.MANIFOLD_CONTRACT_ADDRESS;
   const contract = await contractFactory.deploy(mainContract);
-  await contract.deployed();
-  console.log("Yout need this address for minting!");
-  console.log("Contract deployed to:", contract.address);
+  const { address:contractAddress } = await contract.deployed();
+  
+  console.log("You need this address for minting!");
+  console.log("Contract deployed to:", contractAddress);
   
 }
 

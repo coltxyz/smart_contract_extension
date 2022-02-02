@@ -56,9 +56,10 @@ contract ExtensionMint1155 is AdminControl, ICreatorExtensionTokenURI {
         address[] memory arg1 = new address[](1);
         arg1[0] = msg.sender;
         _amountsForMint.push(1);
-        _tokenIdsForMint.push(1);
-        // IERC1155CreatorCore(_creator).mintExtensionNew(arg1, _amountsForMint, _urisForMint);
-        IERC1155CreatorCore(_creator).mintExtensionExisting(arg1, _tokenIdsForMint, _amountsForMint);
+        _urisForMint.push('https://studio.api.manifoldxyz.dev/asset_uploader/asset/3557341317/metadata/full');
+        // _tokenIdsForMint.push(1);
+        IERC1155CreatorCore(_creator).mintExtensionNew(arg1, _amountsForMint, _urisForMint);
+        // IERC1155CreatorCore(_creator).mintExtensionExisting(arg1, _tokenIdsForMint, _amountsForMint);
     }
 
     function setName(string memory name) private adminRequired {
