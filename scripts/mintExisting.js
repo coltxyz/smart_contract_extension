@@ -3,7 +3,7 @@ require('dotenv').config();
 // Settings please adjust
 const PUBLIC_KEY = process.env.PUBLIC_KEY;  // Wallet Address sender
 const PRIVATE_KEY = process.env.PRIVATE_KEY; //Private Walled Key
-const extensionContractAddress = "0xF45eF314460Ca234Fd51Aa3dC1AD37c5089Ba0b2"; // Contract Address
+const extensionContractAddress = "0x465983ee303e48A8827d18e375f0e8b00aea3D48"; // Contract Address
 const API_URL = process.env.STAGING_ALCHEMY_KEY; // Alchemy API Url
 
 
@@ -15,7 +15,7 @@ const contract = require("../artifacts/contracts/ExtensionMint1155.sol/Extension
 const nftContract = new web3.eth.Contract(contract.abi, extensionContractAddress);
 
 
-async function mintNFT() {
+async function mintExisting() {
   const nonce = await web3.eth.getTransactionCount(PUBLIC_KEY, 'latest'); //get latest nonce
   console.log("initialize");
 
@@ -41,7 +41,8 @@ async function mintNFT() {
       'nonce': nonce,
       'gasPrice': gasPrice * 2,
       'gas': estimatedGas * 20,
-      'data': nftContract.methods.mint().encodeABI()
+      'value': 10000000000000000,
+      'data': nftContract.methods.mintExisting().encodeABI()
     };
 
     const signedTx = await web3.eth.accounts.signTransaction(tx, PRIVATE_KEY)
@@ -55,7 +56,7 @@ async function mintNFT() {
     console.log(err)
   }
 }
-mintNFT().then(data => {
+mintExisting().then(data => {
   console.log(data)
 });
 
